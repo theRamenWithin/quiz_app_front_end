@@ -1,17 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-export default function NavBar({ isLoggedIn, isQuizPage }) {
-  // Renders a Navbar split into two sides.
+export default function NavBar({ isLoggedIn, quizArray }) {
   return (
     <nav className="nav">
       <ul>
-        {/* Render the Login & Sign Up links if not signed in */}
-        {isLoggedIn && isQuizPage ? (
-          <>
-            <li>{/* Some loop for the quiz icons */}</li>
-            <div className="quiz-controls"></div>
-          </>
+        {isLoggedIn && quizArray.length !== 0 ? (
+          [...Array(quizArray.length)].map(() => <li key={Math.random()}>Icon</li>)
         ) : (
           <>
             <li>
@@ -27,7 +22,6 @@ export default function NavBar({ isLoggedIn, isQuizPage }) {
             </li>
           </>
         )}
-        {/*  */}
       </ul>
     </nav>
   );
