@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useHistory, BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
 // API Request
 import axios from 'axios';
@@ -27,6 +27,22 @@ export default function App() {
   });
   const [quizState, setQuizState] = useState([]);
 
+  // Axios GET to quiz API for questions and answers
+  const getQuiz = (numberOfQs, difficulty) => {
+    axios
+      .get(
+        'https://opentdb.com/api.php?amount=' +
+          numberOfQs +
+          '&category=9&difficulty=' +
+          difficulty +
+          '&type=multiple'
+      )
+      .then((response) => {
+        setQuizState(response.data.results);
+      })
+      .catch((error) => console.log('Axios - API errors:', error));
+  };
+
   // Axios GET request to API method to check if there is a logged in user
   // const loginStatus = () => {
   //   axios
@@ -41,32 +57,15 @@ export default function App() {
   //     .catch((error) => console.log('api errors:', error));
   // };
 
-  // Axios GET to quiz API for questions and answers
-  const getQuiz = (numberOfQs, difficulty) => {
-    axios
-      .get(
-        'https://opentdb.com/api.php?amount=' +
-          numberOfQs +
-          '&category=9&difficulty=' +
-          difficulty +
-          '&type=multiple'
-      )
-      .then((response) => {
-        const quizData = response.data.results;
-        setQuizState(quizData);
-      })
-      .catch((error) => console.log('api errors:', error));
-  };
-
   // Sets isLoggedIn to True and user to user data received from Rails
-  const handleLogin = (data) => {
-    setLoginState((prevState) => ({
-      ...prevState,
-      isLoggedIn: true,
-      user: data.username,
-      userID: data.id,
-    }));
-  };
+  // const handleLogin = (data) => {
+  //   setLoginState((prevState) => ({
+  //     ...prevState,
+  //     isLoggedIn: true,
+  //     user: data.username,
+  //     userID: data.id,
+  //   }));
+  // };
 
   // Sets isLoggedIn to False and clears current user data
   // const handleLogout = () => {
@@ -85,11 +84,11 @@ export default function App() {
     <>
       <Router>
         <div className="main-container">
-          <NavBar isLoggedIn={loginState.isLoggedIn} isQuizPage={false} />
+          <NavBar isLoggedIn={loginState.isLoggedIn} quizArray={quizState} />
 
           <div className="content-container">
             <Switch>
-              <Route
+              {/* <Route
                 exact
                 path="/signup"
                 render={(props) => <SignUp {...props} handleLogin={handleLogin} />}
@@ -98,20 +97,30 @@ export default function App() {
                 exact
                 path="/login"
                 render={(props) => <Login {...props} handleLogin={handleLogin} />}
-              />
+              /> */}
               <Route
+                exact
+                path="/quiz"
+                render={(props) => <Quiz {...props} quizArray={quizState} />}
+              />
+              {/* <Route
                 exact
                 path="/quiz"
                 render={(props) => {
                   loginState.isLoggedIn ? (
-                    <Quiz {...props} quizState={quizState} />
+                    <Quiz {...props} quizArray={quizState} />
                   ) : (
                     <Redirect to="/" />
                   );
                 }}
+              /> */}
+              <Route
+                exact
+                path="/"
+                render={(props) => (
+                  <Home {...props} isLoggedIn={loginState.isLoggedIn} getQuiz={getQuiz} />
+                )}
               />
-              <Route exact path="/" render={(props) => <Home {...props} getQuiz={getQuiz} />} />
-
               {/* URL with no matching route calls the 404 component */}
               <Route component={NotFound} />
             </Switch>
