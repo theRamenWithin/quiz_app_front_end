@@ -6,7 +6,11 @@ export default function NavBar({ isLoggedIn, quizArray }) {
     <nav className="nav">
       <ul>
         {isLoggedIn && quizArray.length !== 0 ? (
-          [...Array(quizArray.length)].map(() => <li key={Math.random()}>Icon</li>)
+          [...Array(quizArray.length)].map(() => (
+            <div className="qIcon" key={Math.random()}>
+              Icon
+            </div>
+          ))
         ) : (
           <>
             <li>
