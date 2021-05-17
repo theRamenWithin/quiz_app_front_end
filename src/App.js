@@ -10,6 +10,7 @@ import NavBar from './components/NavBar.js';
 // Page Content
 import Home from './components/Home';
 import Quiz from './components/Quiz';
+import Result from './components/Result';
 import Login from './components/Login';
 import SignUp from './components/SignUp';
 
@@ -26,6 +27,11 @@ export default function App() {
     userID: '123',
   });
   const [quizState, setQuizState] = useState([]);
+  const [quizResult, setQuizResultState] = useState({
+    outcome: 'Fail',
+    numOfQs: 0,
+    numOfCorrectQs: 0,
+  });
 
   // Axios GET to quiz API for questions and answers
   const getQuiz = (numberOfQs, difficulty) => {
@@ -101,19 +107,15 @@ export default function App() {
               <Route
                 exact
                 path="/quiz"
-                render={(props) => <Quiz {...props} quizArray={quizState} />}
+                render={(props) => (
+                  <Quiz {...props} quizArray={quizState} setQuizResultState={setQuizResultState} />
+                )}
               />
-              {/* <Route
+              <Route
                 exact
-                path="/quiz"
-                render={(props) => {
-                  loginState.isLoggedIn ? (
-                    <Quiz {...props} quizArray={quizState} />
-                  ) : (
-                    <Redirect to="/" />
-                  );
-                }}
-              /> */}
+                path="/result"
+                render={(props) => <Result {...props} quizResult={quizResult} />}
+              />
               <Route
                 exact
                 path="/"
