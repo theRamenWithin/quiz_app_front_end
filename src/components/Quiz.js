@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 
+// Styling
+import '../styles/Quiz.css';
+
 export default function Quiz({ quizArray, setQuizResultState }) {
   let history = useHistory();
 
@@ -12,6 +15,7 @@ export default function Quiz({ quizArray, setQuizResultState }) {
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [isBackDisabled, setIsBackDisabled] = useState('true');
   const [isForwardDisabled, setIsForwardDisabled] = useState('true');
+  const [shuffled, setShuffled] = useState(false);
 
   console.log('currentQuestion ' + currentQuestion);
   console.log('answerCount ' + answerCount);
@@ -87,7 +91,7 @@ export default function Quiz({ quizArray, setQuizResultState }) {
       outcome: outcome,
       numOfQs: quizArray.length,
       numOfCorrectQs: numOfCorrectQs(),
-      difficulty: quizArray[0].difficulty,
+      difficulty: atob(quizArray[0].difficulty),
     };
     console.log(results);
     setQuizResultState(results);
@@ -131,39 +135,68 @@ export default function Quiz({ quizArray, setQuizResultState }) {
   /**
    * Render
    */
-  return (
+  return quizArray.length === 0 ? (
+    <p className="fetch-text">Fetching quiz...</p>
+  ) : (
     <>
       <form onSubmit={submitHandler}>
         {quizArray.map((item, i) => {
+          // Create an array of the correct and incorrect answers
           const answerArray = [...item.incorrect_answers, item.correct_answer];
-          const shuffledAnswerArray = shuffle(answerArray);
+          // Shuffle the order but only once
+          if (!shuffled) {
+            shuffle(answerArray);
+            setShuffled(true);
+          }
 
           return (
+            // Make divs for each question with answer buttons
+            //only display if it's the current question
             <div key={i} style={currentQuestion === i ? null : { display: 'none' }}>
-              <h1>
-                Q{i + 1} - {item.question}
-              </h1>
-
-              {shuffledAnswerArray.map((answer, ii) => (
-                <>
-                  <input type="button" key={ii} id={i} value={answer} onClick={selectHandler} />
-                </>
-              ))}
+              <div className="question">
+                <h1>
+                  Q{i + 1} - {atob(item.question)}
+                </h1>
+              </div>
+              <div className="answers">
+                {answerArray.map((answer, ii) => (
+                  <>
+                    <input
+                      type="button"
+                      key={ii}
+                      id={i}
+                      className={item.selected_answer === atob(answer) ? 'selected' : 'input'}
+                      value={atob(answer)}
+                      onClick={selectHandler}
+                    />
+                  </>
+                ))}
+              </div>
             </div>
           );
         })}
         {quizState.length <= answerCount && quizState.length === currentQuestion + 1 ? (
-          <button type="submit">Submit Quiz</button>
+          <div className="submit-container">
+            <button className="submit" type="submit">
+              Submit Quiz
+            </button>
+          </div>
         ) : null}
       </form>
 
       <div className="quiz-nav-controls">
-        <button disabled={isBackDisabled} className="back-button" onClick={backHandler}>
-          Back
+        <button disabled={isBackDisabled} className="nav-button" onClick={backHandler}>
+          &lt;
         </button>
-        <button disabled={isForwardDisabled} className="forward-button" onClick={forwardHandler}>
-          Forward
+        <button disabled={isForwardDisabled} className="nav-button" onClick={forwardHandler}>
+          &gt;
         </button>
+      </div>
+
+      <div className="quiz-icons">
+        {[...Array(quizArray.length)].map((i) => (
+          <div className="quiz-icon" key={i}></div>
+        ))}
       </div>
     </>
   );
