@@ -1,11 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-export default function Result({ quizResult }) {
-  console.log(quizResult);
+// Styling
+import '../styles/Result.css';
 
+export default function Result({ quizResult }) {
   return (
-    <div>
+    <div className="results">
       <h1>Your quiz result: {quizResult.outcome}</h1>
       <h2>
         Quiz difficulty was:{' '}
