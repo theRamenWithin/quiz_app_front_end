@@ -9,8 +9,13 @@
 
 .nav-left {
   float: left;
+  display: flex;
   padding-left: 10px;
   font-weight: bold;
+}
+
+.nav-left p {
+  padding-right: 10px;
 }
 
 .nav-right {
