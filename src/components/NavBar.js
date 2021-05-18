@@ -12,19 +12,19 @@ export default function NavBar({ loginState }) {
         {loginState.isLoggedIn ? (
           <p>Welcome back, {loginState.user}</p>
         ) : (
-          <ul>
-            <li>
+          <>
+            <p>
               <Link to={'/signup'} className="nav-link">
                 Sign Up{' '}
               </Link>
-            </li>
-            <li>
+            </p>
+            <p>
               <Link to={'/login'} className="nav-link">
                 {' '}
                 Login
               </Link>
-            </li>
-          </ul>
+            </p>
+          </>
         )}
       </div>
       <div className="nav-right">
