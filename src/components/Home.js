@@ -38,7 +38,7 @@ export default function Home({ isLoggedIn, getQuiz, setQuizState }) {
    * Render
    */
   return (
-    <div>
+    <>
       <div className="hero-text">
         <p className="header">Quiz App</p>
       </div>
@@ -73,6 +73,6 @@ export default function Home({ isLoggedIn, getQuiz, setQuizState }) {
       ) : (
         <p>Please login to start a new quiz</p>
       )}
-    </div>
+    </>
   );
 }
