@@ -1,18 +1,18 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-export default function NavBar({ isLoggedIn, quizArray }) {
+import logo from '../assets/ManezCo.png';
+
+import '../styles/NavBar.css';
+
+export default function NavBar({ loginState }) {
   return (
-    <nav className="nav">
-      <ul>
-        {isLoggedIn && quizArray.length !== 0 ? (
-          [...Array(quizArray.length)].map(() => (
-            <div className="qIcon" key={Math.random()}>
-              Icon
-            </div>
-          ))
+    <div className="nav">
+      <div className="nav-left">
+        {loginState.isLoggedIn ? (
+          <p>Welcome back, {loginState.user}</p>
         ) : (
-          <>
+          <ul>
             <li>
               <Link to={'/signup'} className="nav-link">
                 Sign Up{' '}
@@ -24,9 +24,12 @@ export default function NavBar({ isLoggedIn, quizArray }) {
                 Login
               </Link>
             </li>
-          </>
+          </ul>
         )}
-      </ul>
-    </nav>
+      </div>
+      <div className="nav-right">
+        <img src={logo} alt="Logo" />
+      </div>
+    </div>
   );
 }
