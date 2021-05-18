@@ -44,7 +44,12 @@
   display: inline-block;
   font-size: 16px;
   width: 20vw;
-  margin-top: 20px
+  margin-top: 20px;
+  transition: 0.3s
+}
+
+.submit:hover {
+  background-color: #5c9dd3;
 }
 
 .quiz-icons {
@@ -60,6 +65,16 @@
   height: 25px;
   width: 25px;
   background-color: #4CAF50;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.quiz-icon-answered {
+  position: relative;
+  top: 28px;
+  height: 25px;
+  width: 25px;
+  background-color: #39833b;
   border-radius: 50%;
   display: inline-block;
 }
