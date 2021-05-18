@@ -17,12 +17,6 @@ export default function Quiz({ quizArray, setQuizResultState }) {
   const [isForwardDisabled, setIsForwardDisabled] = useState('true');
   const [shuffled, setShuffled] = useState(false);
 
-  console.log('currentQuestion ' + currentQuestion);
-  console.log('answerCount ' + answerCount);
-
-  console.log('quizState:');
-  console.log(quizState);
-
   // Set initial state from props
   useEffect(() => {
     setQuizState(quizArray);
@@ -53,6 +47,7 @@ export default function Quiz({ quizArray, setQuizResultState }) {
   /**
    * Helper functions
    */
+  // Randomly shuffles a given array
   const shuffle = (array) => {
     var currentIndex = array.length,
       temporaryValue,
@@ -71,10 +66,9 @@ export default function Quiz({ quizArray, setQuizResultState }) {
    * Form Functions
    */
 
-  // Submit
+  // Submit figures out the result, sets the state in App and navigates to the result page
   const submitHandler = (e) => {
     e.preventDefault();
-    console.log(e.target);
 
     const numOfCorrectQs = () => {
       let count = 0;
@@ -93,16 +87,17 @@ export default function Quiz({ quizArray, setQuizResultState }) {
       numOfCorrectQs: numOfCorrectQs(),
       difficulty: atob(quizArray[0].difficulty),
     };
-    console.log(results);
     setQuizResultState(results);
     history.push('./result');
   };
 
-  // Answer selection
+  // Answer handles setting the selected answer in state
+  // Updates the number of answered questions
+  // Enables the forward navigation button if it's not the last question
   const selectHandler = (e) => {
     const { id, value } = e.target;
     let newArr = [...quizState];
-    newArr[id].selected_answer = value;
+    newArr[id].selected_answer = btoa(value);
     setQuizState(newArr);
 
     let count = 0;
@@ -119,15 +114,15 @@ export default function Quiz({ quizArray, setQuizResultState }) {
   };
 
   // Previous question
+  // On pressing back, go back one question
   const backHandler = () => {
-    // On pressing back, go back one question
     setCurrentQuestion(currentQuestion - 1);
   };
 
   // Next Question
+  // On pressing forward, go forward one question
+  // Enable the back button
   const forwardHandler = () => {
-    // On pressing forward, go forward one question
-    // Enable the back button
     setCurrentQuestion(currentQuestion + 1);
     setIsBackDisabled('');
   };
@@ -135,6 +130,7 @@ export default function Quiz({ quizArray, setQuizResultState }) {
   /**
    * Render
    */
+  // Until the quizState has been filled, show a message
   return quizArray.length === 0 ? (
     <p className="fetch-text">Fetching quiz...</p>
   ) : (
@@ -151,13 +147,14 @@ export default function Quiz({ quizArray, setQuizResultState }) {
 
           return (
             // Make divs for each question with answer buttons
-            //only display if it's the current question
+            // only display if it's the current question
             <div key={i} style={currentQuestion === i ? null : { display: 'none' }}>
               <div className="question">
                 <h1>
                   Q{i + 1} - {atob(item.question)}
                 </h1>
               </div>
+              {/* Make the answers buttons */}
               <div className="answers">
                 {answerArray.map((answer, ii) => (
                   <>
@@ -165,7 +162,7 @@ export default function Quiz({ quizArray, setQuizResultState }) {
                       type="button"
                       key={ii}
                       id={i}
-                      className={item.selected_answer === atob(answer) ? 'selected' : 'input'}
+                      className={item.selected_answer === answer ? 'selected' : 'input'}
                       value={atob(answer)}
                       onClick={selectHandler}
                     />
@@ -175,6 +172,7 @@ export default function Quiz({ quizArray, setQuizResultState }) {
             </div>
           );
         })}
+        {/* Make a visual progress bar, a small circle for each question, answered or otherwise */}
         {quizState.length <= answerCount && quizState.length === currentQuestion + 1 ? (
           <div className="submit-container">
             <button className="submit" type="submit">
@@ -194,8 +192,8 @@ export default function Quiz({ quizArray, setQuizResultState }) {
       </div>
 
       <div className="quiz-icons">
-        {[...Array(quizArray.length)].map((i) => (
-          <div className="quiz-icon" key={i}></div>
+        {quizState.map((item, i) => (
+          <div className={item.selected_answer ? 'quiz-icon-answered' : 'quiz-icon'} key={i} />
         ))}
       </div>
     </>
