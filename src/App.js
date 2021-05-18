@@ -21,8 +21,11 @@ import NotFound from './components/404';
 import './styles/App.css';
 
 export default function App() {
+  /**
+   * State
+   */
   const [loginState, setLoginState] = useState({
-    isLoggedIn: true,
+    isLoggedIn: false,
     user: 'Alex',
     userID: '123',
   });
@@ -33,7 +36,10 @@ export default function App() {
     numOfCorrectQs: 0,
   });
 
-  // Axios GET to quiz API for questions and answers
+  /**
+   * Axios
+   */
+  // GET quiz from api
   const getQuiz = (numberOfQs, difficulty) => {
     axios
       .get(
@@ -49,7 +55,6 @@ export default function App() {
       .catch((error) => console.log('Axios - API errors:', error));
   };
 
-  // Axios GET request to API method to check if there is a logged in user
   // const loginStatus = () => {
   //   axios
   //     .get(process.env.REACT_APP_DOMAIN + '/logged_in', { withCredentials: true })
@@ -86,12 +91,17 @@ export default function App() {
   // On re-render, check loginStatus
   // useEffect(loginStatus);
 
+  /**
+   * Render
+   */
   return (
     <>
       <Router>
         <div className="main-container">
+          {/* NavBar at the top of each page */}
           <NavBar loginState={loginState} />
 
+          {/* Main content */}
           <div className="content-container">
             <Switch>
               {/* <Route
@@ -128,6 +138,7 @@ export default function App() {
                   />
                 )}
               />
+
               {/* URL with no matching route calls the 404 component */}
               <Route component={NotFound} />
             </Switch>
