@@ -1,0 +1,40 @@
+.hero-text {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.header {
+  font-size: 4rem;
+}
+
+.sub-header {
+  font-size: 1rem;
+}
+
+.form-input {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 10px;
+}
+
+input, select {
+  padding: 12px 20px;
+  margin: 8px 0;
+  width: 15vw;
+}
+
+.button {
+  background-color: #4CAF50;
+  color: white;
+  border: #367D38 solid 1px;
+  border-radius: 10px;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  width: 15vw;
+  margin-top: 30px
+}
