@@ -18,7 +18,7 @@ import SignUp from './components/SignUp';
 import NotFound from './components/404';
 
 // Styling
-import './App.css';
+import './styles/App.css';
 
 export default function App() {
   const [loginState, setLoginState] = useState({
@@ -41,7 +41,7 @@ export default function App() {
           numberOfQs +
           '&category=9&difficulty=' +
           difficulty +
-          '&type=multiple'
+          '&type=multiple&encode=base64'
       )
       .then((response) => {
         setQuizState(response.data.results);
@@ -90,7 +90,7 @@ export default function App() {
     <>
       <Router>
         <div className="main-container">
-          <NavBar isLoggedIn={loginState.isLoggedIn} quizArray={quizState} />
+          <NavBar loginState={loginState} />
 
           <div className="content-container">
             <Switch>
@@ -120,7 +120,12 @@ export default function App() {
                 exact
                 path="/"
                 render={(props) => (
-                  <Home {...props} isLoggedIn={loginState.isLoggedIn} getQuiz={getQuiz} />
+                  <Home
+                    {...props}
+                    isLoggedIn={loginState.isLoggedIn}
+                    getQuiz={getQuiz}
+                    setQuizState={setQuizState}
+                  />
                 )}
               />
               {/* URL with no matching route calls the 404 component */}
