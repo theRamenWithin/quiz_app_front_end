@@ -182,6 +182,7 @@ export default function Quiz({ quizArray, setQuizResultState }) {
         ) : null}
       </form>
 
+      {/* Navigatin controls for moving between questionswwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww */}
       <div className="quiz-nav-controls">
         <button disabled={isBackDisabled} className="nav-button" onClick={backHandler}>
           &lt;
