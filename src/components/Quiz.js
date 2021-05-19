@@ -15,11 +15,18 @@ export default function Quiz({ quizArray, setQuizResultState }) {
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [isBackDisabled, setIsBackDisabled] = useState('true');
   const [isForwardDisabled, setIsForwardDisabled] = useState('true');
-  const [shuffled, setShuffled] = useState(false);
 
-  // Set initial state from props
+  // Takes quizArray prop, adds a new array of shuffled answers for each question
+  // Sets quiz state with the new array
   useEffect(() => {
-    setQuizState(quizArray);
+    let newQuizArr = [...quizArray];
+
+    newQuizArr.forEach((item) => {
+      const answerArray = [...item.incorrect_answers, item.correct_answer];
+      shuffle(answerArray);
+      item.shuffled_answer_array = answerArray;
+    });
+    setQuizState(newQuizArr);
   }, [quizArray]);
 
   useEffect(() => {
@@ -136,15 +143,7 @@ export default function Quiz({ quizArray, setQuizResultState }) {
   ) : (
     <>
       <form onSubmit={submitHandler}>
-        {quizArray.map((item, i) => {
-          // Create an array of the correct and incorrect answers
-          const answerArray = [...item.incorrect_answers, item.correct_answer];
-          // Shuffle the order but only once
-          if (!shuffled) {
-            shuffle(answerArray);
-            setShuffled(true);
-          }
-
+        {quizState.map((item, i) => {
           return (
             // Make divs for each question with answer buttons
             // only display if it's the current question
@@ -156,7 +155,7 @@ export default function Quiz({ quizArray, setQuizResultState }) {
               </div>
               {/* Make the answers buttons */}
               <div className="answers">
-                {answerArray.map((answer, ii) => (
+                {item.shuffled_answer_array.map((answer, ii) => (
                   <>
                     <input
                       type="button"
@@ -182,7 +181,7 @@ export default function Quiz({ quizArray, setQuizResultState }) {
         ) : null}
       </form>
 
-      {/* Navigatin controls for moving between questionswwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww */}
+      {/* Navigatin controls for moving between questions */}
       <div className="quiz-nav-controls">
         <button disabled={isBackDisabled} className="nav-button" onClick={backHandler}>
           &lt;
