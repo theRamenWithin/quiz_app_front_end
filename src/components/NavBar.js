@@ -5,12 +5,19 @@ import logo from '../assets/ManezCo.png';
 
 import '../styles/NavBar.css';
 
-export default function NavBar({ loginState }) {
+export default function NavBar({ loginState, handleLogout }) {
   return (
     <div className="nav">
       <div className="nav-left">
         {loginState.isLoggedIn ? (
-          <p>Welcome back, {loginState.user}</p>
+          <>
+            <p>Welcome back, {loginState.user}</p>
+            <p>
+              <Link to={'/'} onClick={handleLogout}>
+                Logout
+              </Link>
+            </p>
+          </>
         ) : (
           <>
             <p>
@@ -28,7 +35,9 @@ export default function NavBar({ loginState }) {
         )}
       </div>
       <div className="nav-right">
-        <img src={logo} alt="Logo" />
+        <Link to={'/'}>
+          <img src={logo} alt="Logo" />
+        </Link>
       </div>
     </div>
   );
