@@ -121,6 +121,7 @@ export default function App() {
                 path="/login"
                 render={(props) => <Login {...props} handleLogin={handleLogin} />}
               />
+              {/* If the user isn't logged in, the user cannot manually start a quiz */}
               {loginState.isLoggedIn ? null : <Redirect from="/quiz" to="/" />}
               <Route
                 exact
@@ -129,6 +130,8 @@ export default function App() {
                   <Quiz {...props} quizArray={quizState} setQuizResultState={setQuizResultState} />
                 )}
               />
+              {/* If there's no quizState, the user cannot manually go results */}
+              {quizState.length === 0 ? <Redirect from="/result" to="/" /> : null}
               <Route
                 exact
                 path="/result"
