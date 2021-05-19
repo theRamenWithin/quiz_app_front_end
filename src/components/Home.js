@@ -48,6 +48,7 @@ export default function Home({ isLoggedIn, getQuiz, setQuizState }) {
           <div className="form-input">
             <label>Number of Questions (3-8)</label>
             <input
+              required
               type="number"
               min="3"
               max="8"
@@ -57,7 +58,7 @@ export default function Home({ isLoggedIn, getQuiz, setQuizState }) {
             />
           </div>
           <div className="form-input">
-            <label>Difficulty:</label>
+            <label>Difficulty</label>
             <select name="difficulty" value={values.difficulty} onChange={inputChangeHandler}>
               <option value="easy">Easy</option>
               <option value="medium">Medium</option>
